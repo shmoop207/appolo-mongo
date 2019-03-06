@@ -5,4 +5,4 @@ import {Ref,DocType,ModelType} from "./lib/interfaces"
 import {Schema} from "./lib/schema"
 
 
-export {Ref,DocType,ModelType}
+export {Ref,DocType,ModelType,Schema}
