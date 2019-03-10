@@ -11,9 +11,7 @@ npm i @appolo/mongo
 
 ## Usage
 ```typescript
-import {define, singleton} from 'appolo'
 import {schema,prop,Model,model,Ref,injectModel,Doc} from "@appolo/mongo";
-
 
 @schema("User",{strict:true})
 export class User{
