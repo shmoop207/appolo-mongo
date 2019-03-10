@@ -4,12 +4,19 @@ import {IndexOptions} from "mongodb";
 import {Utils} from "./utils";
 import {PostType, PreType, SchemaData, SchemaDefineKey} from "./interfaces";
 import {Schema} from "./schema";
+import * as _ from "lodash";
 
 
 export function schema(name?: string, options?: SchemaOptions) {
     return function (fn: typeof Schema) {
 
         let data = Utils.getReflectData<SchemaData>(SchemaDefineKey, fn.prototype, {});
+
+        if (_.isObject(name)) {
+            name = "";
+            options = name as SchemaOptions;
+
+        }
 
         data.name = name || fn.name;
         data.options = options;

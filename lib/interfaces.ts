@@ -1,13 +1,13 @@
-import {Document, Model, Schema as MongooseSchema, SchemaOptions, SchemaTypeOpts} from "mongoose";
+import {Document, Model as MongooseModel, Schema as MongooseSchema, SchemaOptions, SchemaTypeOpts} from "mongoose";
 import {IndexOptions} from "mongodb";
 import {Schema} from "./schema";
 
 
 export type Ref<T> = T | MongooseSchema.Types.ObjectId;
 
-export type DocType<T> = T & Document;
+export type Doc<T> = T & Document;
 
-export type ModelType<T extends Schema> = Model<DocType<T>>;
+export type Model<T extends Schema> = MongooseModel<Doc<T>>;
 
 export interface SchemaData {
     name?: string

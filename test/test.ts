@@ -2,11 +2,11 @@ import {TestNested} from "./testNested";
 import {TesRef} from "./tesRef";
 import {method, pre, prop, schema, staticMethod, virtual} from "../lib/decorators";
 import {Schema} from "../lib/schema";
-import {DocType, ModelType, Ref} from "../lib/interfaces";
+import {Doc, Model, Ref} from "../lib/interfaces";
 
 
 @schema("Test", {strict: true})
-export class TestModel extends Schema {
+export class Test extends Schema {
 
     _id: string;
 
@@ -28,12 +28,12 @@ export class TestModel extends Schema {
     }
 
     @method()
-    setName2(this: DocType<TestModel>,name) {
+    setName2(this: Doc<Test>, name) {
         this.save += name;
     }
 
     @staticMethod()
-    static setName3(this: ModelType<TestModel>,name) {
+    static setName3(this: Model<Test>, name) {
         return this.findById(name);
     }
 

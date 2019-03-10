@@ -1,7 +1,7 @@
 "use strict";
 import chai = require('chai');
 import mongoose = require('mongoose');
-import {TestModel} from "./testModel";
+import {Test} from "./test";
 import {TesRef} from "./tesRef";
 
 
@@ -12,7 +12,7 @@ describe("schema", function () {
 
     it('should create valid schema', async () => {
 
-        let model = TestModel.getModel(mongoose.connection);
+        let model = Test.getModel(mongoose.connection);
         let model2 = TesRef.getModel(mongoose.connection);
 
         model.schema.methods.setName2.should.be.ok;

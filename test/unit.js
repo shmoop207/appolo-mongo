@@ -2,12 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const chai = require("chai");
 const mongoose = require("mongoose");
-const testModel_1 = require("./testModel");
+const test_1 = require("./test");
 const tesRef_1 = require("./tesRef");
 let should = chai.should();
 describe("schema", function () {
     it('should create valid schema', async () => {
-        let model = testModel_1.TestModel.getModel(mongoose.connection);
+        let model = test_1.Test.getModel(mongoose.connection);
         let model2 = tesRef_1.TesRef.getModel(mongoose.connection);
         model.schema.methods.setName2.should.be.ok;
         model.schema.statics.setName3.should.be.ok;
