@@ -3,7 +3,7 @@ import {IndexOptions} from "mongodb";
 import {Schema} from "./schema";
 
 
-export type Ref<T, K = MongooseSchema.Types.ObjectId> = T & Document | K;
+export type Ref<T, K = MongooseSchema.Types.ObjectId | string> = T & Document | K;
 
 export type Doc<T> = T & Document;
 
