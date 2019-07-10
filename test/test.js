@@ -36,7 +36,7 @@ tslib_1.__decorate([
 ], Test.prototype, "testRef", void 0);
 tslib_1.__decorate([
     decorators_1.prop([{ ref: tesRef_1.TesRef }]),
-    tslib_1.__metadata("design:type", Object)
+    tslib_1.__metadata("design:type", Array)
 ], Test.prototype, "testRefArr", void 0);
 tslib_1.__decorate([
     decorators_1.virtual(),

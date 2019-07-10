@@ -22,7 +22,7 @@ export class Test extends Schema {
     testRef: Ref<TesRef>;
 
     @prop([{ref: TesRef}])
-    testRefArr: Ref<TesRef>;
+    testRefArr: Ref<TesRef>[];
 
     @virtual()
     set setName(name) {

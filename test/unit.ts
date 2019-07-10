@@ -3,6 +3,7 @@ import chai = require('chai');
 import mongoose = require('mongoose');
 import {Test} from "./test";
 import {TesRef} from "./tesRef";
+import {Doc} from "../lib/interfaces";
 
 
 let should = chai.should();

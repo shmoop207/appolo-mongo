@@ -3,7 +3,7 @@ import {IndexOptions} from "mongodb";
 import {Schema} from "./schema";
 
 
-export type Ref<T> = T | MongooseSchema.Types.ObjectId;
+export type Ref<T, K = MongooseSchema.Types.ObjectId> = T & Document | K;
 
 export type Doc<T> = T & Document;
 
@@ -31,7 +31,7 @@ export type PreType = | "count" | "init" | "validate" | "remove"
     | "findOneAndUpdate"
     | "update"
     | "updateOne"
-    | "updateMany" | "aggregate" | "insertMany"| "save" | "insertMany"
+    | "updateMany" | "aggregate" | "insertMany" | "save" | "insertMany"
 
 
 export type PostType = | "count"
