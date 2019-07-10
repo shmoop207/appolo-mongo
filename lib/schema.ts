@@ -57,7 +57,9 @@ export class Schema {
         if (Schema.prototype.isPrototypeOf(schema.prototype)) {
             schema = schema.getSchema()
         } else if (schema.ref && Schema.prototype.isPrototypeOf(schema.ref.prototype)) {
-            schema = _.extend({}, schema, {type: MongoseScheam.Types.ObjectId, ref: schema.ref.collectionName})
+
+            schema.ref = schema.ref.collectionName;
+            schema = _.defaults({}, schema, {type: MongoseScheam.Types.ObjectId})
         } else if (schema.enum && !Array.isArray(schema.enum)) {
 
             schema = _.extend({}, schema, {enum: Utils.enumValues(schema.enum)})

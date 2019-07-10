@@ -12,6 +12,8 @@ export class Test extends Schema {
 
     @prop({type: String})
     name: string;
+    @prop()
+    name2: string;
 
     @prop(TestNested)
     nested: TestNested;

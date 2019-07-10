@@ -12,6 +12,7 @@ describe("schema", function () {
         model.schema.methods.setName2.should.be.ok;
         model.schema.statics.setName3.should.be.ok;
         model.schema.obj.name.type.should.be.eq(String);
+        model.schema.obj.name2.type.should.be.eq(String);
         model.schema.obj.nested.obj.deep.type.should.be.eq(String);
         model.schema.obj.testRef.ref.should.be.eq("TesRef");
         model2.schema.indexes()[0][0].bla.should.be.eq(1);

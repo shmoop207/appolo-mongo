@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import {Schema as MongoSchema, SchemaOptions, SchemaType, SchemaTypeOpts} from "mongoose";
+import { Schema as MongoSchema, SchemaOptions, SchemaType, SchemaTypeOpts} from "mongoose";
 import {IndexOptions} from "mongodb";
 import {Utils} from "./utils";
 import {PostType, PreType, SchemaData, SchemaDefineKey} from "./interfaces";
@@ -23,11 +23,39 @@ export function schema(name?: string, options?: SchemaOptions) {
     }
 }
 
-export function prop(schema: SchemaTypeOpts<any> | MongoSchema | SchemaType) {
+export function propRef(ref: any, schema?: SchemaTypeOpts<any>) {
+
+    schema = _.defaults({}, schema || {}, {ref: ref});
+
+    return prop(schema)
+}
+
+export function propRefArray(ref: any, schema?: SchemaTypeOpts<any>) {
+
+    schema = _.defaults({}, schema || {}, {ref: ref});
+
+    return propArray(schema)
+}
+
+export function propArray(type: any, schema?: SchemaTypeOpts<any> | MongoSchema | SchemaType) {
+
+    schema = _.defaults({}, schema || {}, {type: type});
+
+    return prop([schema])
+}
+
+
+export function prop(schema?: SchemaTypeOpts<any> | MongoSchema | SchemaType) {
 
     return function (target: any, propertyKey: string, descriptor?: PropertyDescriptor) {
 
         let data = Utils.getReflectData<SchemaData>(SchemaDefineKey, target, {});
+
+        let type = Reflect.getMetadata("design:type", target, propertyKey);
+
+        if (type && (!schema || _.isPlainObject(schema))) {
+            schema = _.defaults({}, schema || {}, {type: type})
+        }
 
         if (!data.props) {
             data.props = {};

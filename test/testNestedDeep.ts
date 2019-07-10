@@ -10,4 +10,7 @@ export class TestNestedDeep extends Schema {
     @prop({type: String})
     deep: string;
 
+    @prop({type: String})
+    deepArray: string[];
+
 }

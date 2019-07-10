@@ -10,4 +10,7 @@ export class TestNested extends TestNestedDeep {
     @prop({type: String})
     name: string;
 
+    @prop()
+    name2: string;
+
 }
