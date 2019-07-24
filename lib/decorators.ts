@@ -27,21 +27,21 @@ export function propRef(ref: any, schema?: SchemaTypeOpts<any>) {
 
     schema = _.defaults({}, schema || {}, {ref: ref, type: MongoSchema.Types.ObjectId});
 
-    return prop(schema)
+    return prop(schema);
 }
 
 export function propRefArray(ref: any, schema?: SchemaTypeOpts<any>) {
 
     schema = _.defaults({}, schema || {}, {ref: ref, type: MongoSchema.Types.ObjectId});
 
-    return propArray(schema)
+    return prop([schema]);
 }
 
 export function propArray(type: any, schema?: SchemaTypeOpts<any> | MongoSchema | SchemaType) {
 
     schema = _.defaults({}, schema || {}, {type: type});
 
-    return prop([schema])
+    return prop([schema]);
 }
 
 

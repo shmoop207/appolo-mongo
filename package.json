@@ -18,7 +18,7 @@
     "test": "mocha test --exit"
   },
   "main": "./index.js",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -27,22 +27,22 @@
   "readme": "",
   "readmeFilename": "README.md",
   "dependencies": {
-    "lodash": "^4.17.13",
-    "mongoose": "^5.6.4",
+    "lodash": "^4.17.15",
+    "mongoose": "^5.6.6",
     "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
     "@types/benchmark": "^1.0.31",
-    "@types/bluebird": "^3.5.24",
-    "@types/chai": "^4.1.6",
-    "@types/lodash": "^4.14.116",
-    "@types/mocha": "^5.2.5",
-    "@types/mongoose": "^5.5.8",
-    "@types/node": "^10.11.3",
-    "bluebird": "^3.5.2",
+    "@types/bluebird": "^3.5.27",
+    "@types/chai": "^4.1.7",
+    "@types/lodash": "^4.14.136",
+    "@types/mocha": "^5.2.7",
+    "@types/mongoose": "^5.5.9",
+    "@types/node": "^12.6.8",
+    "bluebird": "^3.5.5",
     "chai": "^4.2.0",
-    "mocha": "^5.2.0",
-    "tslib": "^1.9.3",
+    "mocha": "^6.2.0",
+    "tslib": "^1.10.0",
     "typescript": "^3.5.3"
   }
 }
