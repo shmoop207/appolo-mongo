@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.TestNestedDeep = void 0;
 const tslib_1 = require("tslib");
 const schema_1 = require("../lib/schema");
 const decorators_1 = require("../lib/decorators");
