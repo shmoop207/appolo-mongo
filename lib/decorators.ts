@@ -1,18 +1,17 @@
 import "reflect-metadata";
 import {Schema as MongoSchema, SchemaOptions, SchemaType, SchemaTypeOpts} from "mongoose";
 import {IndexOptions} from "mongodb";
-import {Utils} from "./utils";
-import {PostType, PreType, SchemaData, SchemaDefineKey} from "./interfaces";
+import {PostType, PreType, SchemaData, SchemaDefineKey, SchemaTypeOptions} from "./interfaces";
 import {Schema} from "./schema";
-import * as _ from "lodash";
+import {Objects, Arrays, Reflector} from "@appolo/utils";
 
 
 export function schema(name?: string, options?: SchemaOptions) {
     return function (fn: typeof Schema) {
 
-        let data = Utils.getReflectData<SchemaData>(SchemaDefineKey, fn.prototype, {});
+        let data = Reflector.getFnMetadata<SchemaData>(SchemaDefineKey, fn.prototype as Function, {});
 
-        if (_.isObject(name)) {
+        if (Objects.isObject(name)) {
             name = "";
             options = name as SchemaOptions;
 
@@ -25,36 +24,36 @@ export function schema(name?: string, options?: SchemaOptions) {
 
 export function propRef(ref: any, schema?: SchemaTypeOpts<any>) {
 
-    schema = _.defaults({}, schema || {}, {ref: ref, type: MongoSchema.Types.ObjectId});
+    schema = Objects.defaults({}, schema || {}, {ref: ref, type: MongoSchema.Types.ObjectId});
 
     return prop(schema);
 }
 
 export function propRefArray(ref: any, schema?: SchemaTypeOpts<any>) {
 
-    schema = _.defaults({}, schema || {}, {ref: ref, type: MongoSchema.Types.ObjectId});
+    schema = Objects.defaults({}, schema || {}, {ref: ref, type: MongoSchema.Types.ObjectId});
 
     return prop([schema]);
 }
 
 export function propArray(type: any, schema?: SchemaTypeOpts<any> | MongoSchema | SchemaType) {
 
-    schema = _.defaults({}, schema || {}, {type: type});
+    schema = Objects.defaults({}, (schema as object) || {}, {type: type});
 
     return prop([schema]);
 }
 
 
-export function prop(schema?: SchemaTypeOpts<any> | MongoSchema | SchemaType) {
+export function prop(schema?: typeof Schema | SchemaTypeOptions<any> | MongoSchema | SchemaType | (typeof Schema | SchemaTypeOpts<any> | MongoSchema | SchemaType)[]) {
 
     return function (target: any, propertyKey: string, descriptor?: PropertyDescriptor) {
 
-        let data = Utils.getReflectData<SchemaData>(SchemaDefineKey, target, {});
+        let data = Reflector.getFnMetadata<SchemaData>(SchemaDefineKey, target, {});
 
         let type = Reflect.getMetadata("design:type", target, propertyKey);
 
-        if (type && (!schema || (_.isPlainObject(schema) && !((schema as SchemaTypeOpts<any>).ref)))) {
-            schema = _.defaults({}, schema || {}, {type: type})
+        if (type && (!schema || (Objects.isPlain(schema) && !((schema as SchemaTypeOpts<any>).ref)))) {
+            schema = Objects.defaults({}, (schema as object) || {}, {type: type})
         }
 
         if (!data.props) {
@@ -67,7 +66,7 @@ export function prop(schema?: SchemaTypeOpts<any> | MongoSchema | SchemaType) {
 
 export function method() {
     return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
-        let data = Utils.getReflectData<SchemaData>(SchemaDefineKey, target, {});
+        let data = Reflector.getFnMetadata<SchemaData>(SchemaDefineKey, target, {});
 
         if (!data.methods) {
             data.methods = {};
@@ -79,7 +78,7 @@ export function method() {
 
 export function staticMethod() {
     return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
-        let data = Utils.getReflectData<SchemaData>(SchemaDefineKey, target.prototype, {});
+        let data = Reflector.getFnMetadata<SchemaData>(SchemaDefineKey, target.prototype, {});
 
         if (!data.staticMethod) {
             data.staticMethod = {};
@@ -92,7 +91,7 @@ export function staticMethod() {
 export function virtual() {
 
     return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
-        let data = Utils.getReflectData<SchemaData>(SchemaDefineKey, target, {});
+        let data = Reflector.getFnMetadata<SchemaData>(SchemaDefineKey, target, {});
 
         if (!data.virtual) {
             data.virtual = {};
@@ -105,7 +104,7 @@ export function virtual() {
 export function pre(name: PreType) {
 
     return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
-        let data = Utils.getReflectData<SchemaData>(SchemaDefineKey, target, {});
+        let data = Reflector.getFnMetadata<SchemaData>(SchemaDefineKey, target, {});
 
         if (!data.pre) {
             data.pre = {};
@@ -120,7 +119,7 @@ export function pre(name: PreType) {
 
 export function post(name: PostType) {
     return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
-        let data = Utils.getReflectData<SchemaData>(SchemaDefineKey, target, {});
+        let data = Reflector.getFnMetadata<SchemaData>(SchemaDefineKey, target, {});
 
         if (!data.post) {
             data.post = {};
@@ -135,7 +134,7 @@ export function post(name: PostType) {
 
 export function index(fields: any, options?: IndexOptions) {
     return function (target: any) {
-        let data = Utils.getReflectData<SchemaData>(SchemaDefineKey, target.prototype, {});
+        let data = Reflector.getFnMetadata<SchemaData>(SchemaDefineKey, target.prototype, {});
 
         if (!data.indexes) {
             data.indexes = [];

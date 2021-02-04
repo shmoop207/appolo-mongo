@@ -1,9 +1,8 @@
-import _ = require('lodash');
 import "reflect-metadata";
-import {Connection, Document, Model, Schema as MongoseScheam, SchemaOptions} from "mongoose";
+import {Objects, Arrays, Reflector, Enums} from "@appolo/utils";
+import {Connection, Document, Model, Schema as MongoseSchema, SchemaOptions} from "mongoose";
 
 import {SchemaData, SchemaDefineKey} from "./interfaces";
-import {Utils} from "./utils";
 
 export const SchemaKey = Symbol("schema");
 export const ModelKey = Symbol("model");
@@ -12,36 +11,37 @@ export const ModelKey = Symbol("model");
 export class Schema {
 
     public static get collectionName(): string {
-        return Utils.getReflectData<SchemaData>(SchemaDefineKey, this.prototype).name
+        return Reflector.getFnMetadata<SchemaData>(SchemaDefineKey, this.prototype as Function).name
     }
 
-    public static createSchema(options?: SchemaOptions): MongoseScheam {
+    public static createSchema(options?: SchemaOptions): MongoseSchema {
 
-        let data = Utils.getReflectData<SchemaData>(SchemaDefineKey, this.prototype);
+        let data = Reflector.getFnMetadata<SchemaData>(SchemaDefineKey, this.prototype as Function);
 
         if (!data) {
             throw new Error("schema not defined");
         }
 
-        let schemaConfig = _.reduce(data.props, (dto: any, value, key) => {
-            dto[key] = this._prepareSchema(value);
-            return dto;
-        }, {});
 
-        let schema = new MongoseScheam(schemaConfig, data.options || options || {});
+        let schemaConfig: any = {};
+        Arrays.forEach(data.props, (value, key) => {
+            schemaConfig[key] = this._prepareSchema(value);
+        });
 
-        _.forEach(data.methods, (value, key) => schema.method(key, value));
-        _.forEach(data.staticMethod, (value, key) => schema.static(key, value));
-        _.forEach(data.virtual, (value: PropertyDescriptor, key: string) => {
+        let schema = new MongoseSchema(schemaConfig, data.options || options || {});
+
+        Arrays.forEach(data.methods, (value, key) => schema.method(key as string, value as any));
+        Arrays.forEach(data.staticMethod, (value, key) => schema.static(key as string, value as any));
+        Arrays.forEach(data.virtual, (value: PropertyDescriptor, key: string) => {
             let virtual = schema.virtual(key);
             value.get && virtual.get(value.get);
             value.set && virtual.set(value.set);
         });
 
-        _.forEach(data.pre, value => schema.pre(value.name, value.fn as any));
-        _.forEach(data.post, value => schema.post(value.name, value.fn as any));
+        Arrays.forEach(data.pre, value => schema.pre(value.name, value.fn as any));
+        Arrays.forEach(data.post, value => schema.post(value.name, value.fn as any));
 
-        _.forEach(data.indexes, (value) => schema.index(value.fields, value.options));
+        Arrays.forEach(data.indexes, (value) => schema.index(value.fields, value.options));
 
         Reflect.defineMetadata(SchemaKey, schema, this.prototype);
 
@@ -50,7 +50,7 @@ export class Schema {
 
 
     private static _prepareSchema(schema: any): any {
-        if (_.isArray(schema)) {
+        if (Array.isArray(schema)) {
             return [this._prepareSchema(schema[0])]
         }
 
@@ -66,23 +66,23 @@ export class Schema {
 
             schema.ref = schema.ref.collectionName;
 
-            schema = _.defaults({}, schema, {type: MongoseScheam.Types.ObjectId})
+            schema = Objects.defaults({}, schema, {type: MongoseSchema.Types.ObjectId})
 
         } else if (schema.enum && !Array.isArray(schema.enum)) {
 
-            schema = _.extend({}, schema, {enum: Utils.enumValues(schema.enum)})
+            schema = Object.assign({}, schema, {enum: Enums.values(schema.enum)})
         }
 
         return schema
     }
 
-    public static getSchema(): MongoseScheam {
+    public static getSchema(): MongoseSchema {
         return Reflect.getOwnMetadata(SchemaKey, this.prototype) || this.createSchema();
     }
 
     public static createModel<T>(connection: Connection, options?: SchemaOptions): Model<T & Document> {
 
-        let schema = this.getSchema() || this.createSchema(options);
+        let schema: MongoseSchema<any> = this.getSchema() || this.createSchema(options);
 
         if (!schema) {
             throw new Error("schema not define");

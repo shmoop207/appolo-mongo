@@ -44,3 +44,14 @@ export type PostType = | "count"
     | "validate"
     | "save"
     | "remove"
+
+
+// @ts-ignore
+export interface SchemaTypeOptions<T> extends SchemaTypeOpts<T> {
+
+    type?: T;
+
+    ref?: any;
+
+
+}
