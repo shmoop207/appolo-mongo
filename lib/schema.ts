@@ -80,7 +80,7 @@ export class Schema {
         return Reflect.getOwnMetadata(SchemaKey, this.prototype) || this.createSchema();
     }
 
-    public static createModel<T>(connection: Connection, options?: SchemaOptions): Model<T & Document> {
+    public static createModel<T>(connection: Connection, options?: SchemaOptions): Model<Document> {
 
         let schema: MongoseSchema<any> = this.getSchema() || this.createSchema(options);
 
@@ -94,7 +94,7 @@ export class Schema {
             throw new Error("schemaName not define");
         }
 
-        let modelItem = connection.model<T & Document>(schemaName, schema);
+        let modelItem = connection.model(schemaName, schema);
 
         Reflect.defineMetadata(ModelKey, modelItem, this.prototype);
 
@@ -102,7 +102,7 @@ export class Schema {
     }
 
 
-    public static getModel<T>(connection: Connection): Model<T & Document> {
+    public static getModel<T>(connection: Connection): Model<Document> {
         return Reflect.getOwnMetadata(ModelKey, this.prototype) || this.createModel(connection);
     }
 }
