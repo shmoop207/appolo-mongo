@@ -1,8 +1,8 @@
 import "reflect-metadata";
 import {Objects, Arrays, Reflector, Enums} from "@appolo/utils";
-import {Connection, Document, Model, Schema as MongoseSchema, SchemaOptions} from "mongoose";
+import {Connection, Document, Model as MongooseModel, Schema as MongoseSchema, SchemaOptions} from "mongoose";
 
-import {SchemaData, SchemaDefineKey} from "./interfaces";
+import {Doc, Model, SchemaData, SchemaDefineKey} from "./interfaces";
 
 export const SchemaKey = Symbol("schema");
 export const ModelKey = Symbol("model");
@@ -80,7 +80,7 @@ export class Schema {
         return Reflect.getOwnMetadata(SchemaKey, this.prototype) || this.createSchema();
     }
 
-    public static createModel<T>(connection: Connection, options?: SchemaOptions): Model<Document> {
+    public static createModel<T>(connection: Connection, options?: SchemaOptions): Model<Doc<T>> {
 
         let schema: MongoseSchema<any> = this.getSchema() || this.createSchema(options);
 
@@ -102,7 +102,7 @@ export class Schema {
     }
 
 
-    public static getModel<T>(connection: Connection): Model<Document> {
+    public static getModel<T>(connection: Connection): Model<Doc<T>> {
         return Reflect.getOwnMetadata(ModelKey, this.prototype) || this.createModel(connection);
     }
 }

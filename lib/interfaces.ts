@@ -5,9 +5,10 @@ import {Schema} from "./schema";
 
 export type Ref<T, K = MongooseSchema.Types.ObjectId | string> = T & Document | K;
 
-export type Doc<T> = Document & T;
+export type Doc<T, K extends Document = Document> = K & T;
 
-export type Model<T extends Schema> = MongooseModel<Document>;
+// @ts-ignore
+export type Model<T> = MongooseModel<Doc<T>>;
 
 export interface SchemaData {
     name?: string
