@@ -1,6 +1,5 @@
 import "reflect-metadata";
-import {Schema as MongoSchema, SchemaOptions, SchemaType, SchemaTypeOpts} from "mongoose";
-import {IndexOptions} from "mongodb";
+import {Schema as MongoSchema, SchemaOptions, SchemaType,IndexOptions} from "mongoose";
 import {PostType, PreType, SchemaData, SchemaDefineKey, SchemaTypeOptions} from "./interfaces";
 import {Schema} from "./schema";
 import {Objects, Arrays, Reflector} from "@appolo/utils";
@@ -22,21 +21,21 @@ export function schema(name?: string, options?: SchemaOptions) {
     }
 }
 
-export function propRef(ref: any, schema?: SchemaTypeOpts<any>) {
+export function propRef(ref: any, schema?: SchemaTypeOptions<any>) {
 
     schema = Objects.defaults({}, schema || {}, {ref: ref, type: MongoSchema.Types.ObjectId});
 
     return prop(schema);
 }
 
-export function propRefArray(ref: any, schema?: SchemaTypeOpts<any>) {
+export function propRefArray(ref: any, schema?: SchemaTypeOptions<any>) {
 
     schema = Objects.defaults({}, schema || {}, {ref: ref, type: MongoSchema.Types.ObjectId});
 
     return prop([schema]);
 }
 
-export function propArray(type: any, schema?: SchemaTypeOpts<any> | MongoSchema | SchemaType) {
+export function propArray(type: any, schema?: SchemaTypeOptions<any> | MongoSchema | SchemaType) {
 
     schema = Objects.defaults({}, (schema as object) || {}, {type: type});
 
@@ -44,7 +43,7 @@ export function propArray(type: any, schema?: SchemaTypeOpts<any> | MongoSchema 
 }
 
 
-export function prop(schema?: typeof Schema | SchemaTypeOptions<any> | MongoSchema | SchemaType | (typeof Schema | SchemaTypeOpts<any> | MongoSchema | SchemaType)[]) {
+export function prop(schema?: typeof Schema | SchemaTypeOptions<any> | MongoSchema | SchemaType | (typeof Schema | SchemaTypeOptions<any> | MongoSchema | SchemaType)[]) {
 
     return function (target: any, propertyKey: string, descriptor?: PropertyDescriptor) {
 
@@ -52,7 +51,7 @@ export function prop(schema?: typeof Schema | SchemaTypeOptions<any> | MongoSche
 
         let type = Reflect.getMetadata("design:type", target, propertyKey);
 
-        if (type && (!schema || (Objects.isPlain(schema) && !((schema as SchemaTypeOpts<any>).ref)))) {
+        if (type && (!schema || (Objects.isPlain(schema) && !((schema as SchemaTypeOptions<any>).ref)))) {
             schema = Objects.defaults({}, (schema as object) || {}, {type: type})
         }
 
@@ -60,7 +59,7 @@ export function prop(schema?: typeof Schema | SchemaTypeOptions<any> | MongoSche
             data.props = {};
         }
 
-        data.props[propertyKey] = schema as SchemaTypeOpts<any>;
+        data.props[propertyKey] = schema as SchemaTypeOptions<any>;
     }
 }
 

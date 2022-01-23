@@ -98,7 +98,7 @@ export class Schema {
 
         Reflect.defineMetadata(ModelKey, modelItem, this.prototype);
 
-        return modelItem;
+        return modelItem as Model<Doc<T>>;
     }
 
 

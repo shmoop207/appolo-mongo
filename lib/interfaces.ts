@@ -1,5 +1,11 @@
-import {Document, Model as MongooseModel, Schema as MongooseSchema, SchemaOptions, SchemaTypeOpts} from "mongoose";
-import {IndexOptions} from "mongodb";
+import {
+    Document,
+    IndexOptions,
+    Model as MongooseModel,
+    Schema as MongooseSchema,
+    SchemaOptions,
+    SchemaType,SchemaTypeOptions as MongooseSchemaTypeOptions
+} from "mongoose";
 import {Schema} from "./schema";
 
 
@@ -7,13 +13,22 @@ export type Ref<T, K = MongooseSchema.Types.ObjectId | string> = T & Document | 
 
 export type Doc<T, K extends Document = Document> = K & T;
 
-// @ts-ignore
 export type Model<T> = MongooseModel<Doc<T>>;
+
+// @ts-ignore
+export interface SchemaTypeOptions<T> extends MongooseSchemaTypeOptions<T> {
+
+    type?: T;
+
+    ref?: any;
+
+
+}
 
 export interface SchemaData {
     name?: string
     options?: SchemaOptions
-    props?: { [index: string]: SchemaTypeOpts<any> }
+    props?: { [index: string]: SchemaTypeOptions<any> }
     methods?: { [index: string]: Function }
     staticMethod?: { [index: string]: Function }
     virtual?: { [index: string]: PropertyDescriptor }
@@ -47,12 +62,4 @@ export type PostType = | "count"
     | "remove"
 
 
-// @ts-ignore
-export interface SchemaTypeOptions<T> extends SchemaTypeOpts<T> {
 
-    type?: T;
-
-    ref?: any;
-
-
-}
