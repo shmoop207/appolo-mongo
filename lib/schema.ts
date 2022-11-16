@@ -38,8 +38,8 @@ export class Schema {
             value.set && virtual.set(value.set);
         });
 
-        Arrays.forEach(data.pre, value => schema.pre(value.name, value.fn as any));
-        Arrays.forEach(data.post, value => schema.post(value.name, value.fn as any));
+        Arrays.forEach(data.pre, value => schema.pre(value.name as any, value.fn as any));
+        Arrays.forEach(data.post, value => schema.post(value.name as any, value.fn as any));
 
         Arrays.forEach(data.indexes, (value) => schema.index(value.fields, value.options));
 
